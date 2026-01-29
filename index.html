@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Test Label 50x38 mm</title>
+  <style>
+    @page { size: 50mm 38mm; margin: 0; }
+    html,body { margin:0; padding:0; }
+    body { background: #fff; }
+    .label {
+      width: 50mm;
+      height: 38mm;
+      box-sizing: border-box;
+      padding: 2.5mm 3mm;
+      font-family: "Arial Black", "Impact", Arial, sans-serif;
+      color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      page-break-after: always;
+    }
+    .line1 { font-size: 4.5mm; font-weight:700; margin-bottom:1mm; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .line2 { font-size: 9mm; font-weight:900; line-height:0.95; margin-bottom:1mm; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .line3 { font-size: 7mm; font-weight:800; text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    /* small helper to ensure printed pages don't get extra margins */
+    .print-container { display:block; }
+  </style>
+</head>
+<body>
+  <div id="printContainer" class="print-container"></div>
+
+  <script>
+    // Replace these with values from your form
+    const data = {
+      line1: 'D/PK 48"',         // top small
+      line2: '4315/14+4',       // main code
+      line3: 'RED'              // colour
+    };
+    const qty = 6; // change to test number of labels
+
+    function createLabel(d) {
+      const el = document.createElement('div');
+      el.className = 'label';
+      el.innerHTML = `<div class="line1">${escapeHtml(d.line1)}</div>
+                      <div class="line2">${escapeHtml(d.line2)}</div>
+                      <div class="line3">${escapeHtml(d.line3)}</div>`;
+      return el;
+    }
+
+    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    const container = document.getElementById('printContainer');
+    for(let i=0;i<qty;i++){
+      container.appendChild(createLabel(data));
+    }
+
+    // auto-open print dialog a short moment after rendering
+    setTimeout(()=>window.print(), 300);
+  </script>
+</body>
+</html>
